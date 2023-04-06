@@ -5,6 +5,9 @@ function Navbar() {
   return (
       <nav>
         <ul>
+            <Link href="/login" legacyBehavior>
+              <a>Log in</a>
+            </Link>
             <Link href="/" legacyBehavior>
               <a>Home</a>
             </Link>
