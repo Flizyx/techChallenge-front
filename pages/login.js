@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import Link from 'next/link';
 
 function Login() {
   const router = useRouter();
@@ -36,7 +38,6 @@ function Login() {
   }
 
   async function handleLoginClick(e) {
-    console.log("submit")
   
     e.preventDefault();
     if (email === '' || password === '') {
@@ -49,13 +50,10 @@ function Login() {
     }
     try {
       const data = await postData('https://schooldemoback.onrender.com/login', { email, password });
-      console.log(data);
       if (data.error) {
-        console.log('Something went wrong. Please try again.');
         return;
       }
       else{
-        console.log("redirect")
         sessionStorage.setItem('token', data.token);
         setToken(data.token);
   
@@ -63,13 +61,18 @@ function Login() {
         router.push('/admin');
       }
     } catch (error) {
-      console.error(error);
     }
   }
 
  
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">   
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center  sm:px-6 lg:px-8 relative"> 
+      <Link href={`/`} legacyBehavior>
+        <a className="w-1/6 mt-4  hover:bg-gray-300 text-black font-bold  px-4  rounded flex items-center">
+          <ArrowLeftIcon className="w-5 h-5 mr-2" />
+          Return
+        </a>
+      </Link>  
       {isLoading ? 
         <div>
           <div class="absolute inset-0 bg-gray-900 opacity-30"></div>

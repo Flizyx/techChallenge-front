@@ -11,11 +11,15 @@ async function getClassrooms() {
 function Home() {
   const [classrooms, setClassrooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
+
+  function getRandomColor(index) {
+    const colors = ["bg-blue-500", "bg-green-500", "bg-red-500", "bg-yellow-500", "bg-orange-500"];
+    return colors[index % colors.length];
+  }
 
   const filteredClassrooms = classrooms.filter((classroom) =>
     classroom.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -94,21 +98,22 @@ function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto">
         {isLoading ? (
           <div>
-            <div class="absolute inset-0 bg-gray-900 opacity-30"></div>
+            <div class="absolute inset-0 bg-gray-300 opacity-30"></div>
             <div class="absolute inset-0 z-10 flex items-center justify-center mt-4">
               <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
             </div>
           </div>
         ) : (
-          filteredClassrooms.map((classroom) => (
+          filteredClassrooms.map((classroom,index) => (
             <Link href={`/classroom/${classroom.id}`} key={classroom.id} legacyBehavior>
             <a className="relative">
               <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <img
-                  className="w-full h-48 object-cover opacity-50"
-                  src="./public/images/default-classroom.jpg"
+                  className="w-full h-48 object-cover opacity-20"
+                  src="/images/default-classroom.jpg"
                   alt=""
                 />
+                <div className={`absolute top-0 left-0 w-full h-2 ${getRandomColor(index)}`}></div>
                 <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-black">
                   <h2 className="text-xl font-semibold">{classroom.name}</h2>
                   <p className="text-gray-500">{classroom.capacity} students</p>

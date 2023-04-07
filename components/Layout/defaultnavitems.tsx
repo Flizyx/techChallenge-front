@@ -19,6 +19,11 @@ export const defaultNavItems: NavItem[] = [
     href: "/login",
     icon: <UserGroupIcon className="w-6 h-6" />,
   },
+  // {
+  //   label: typeof window !== 'undefined' && sessionStorage.getItem('token') ? "Log out" : "Log in",
+  //   href: typeof window !== 'undefined' && sessionStorage.getItem('token') ? "/logout" : "/login",
+  //   icon: <UserGroupIcon className="w-6 h-6" />,
+  // },
 //   {
 //     label: "Classrooms",
 //     href: "/Students",

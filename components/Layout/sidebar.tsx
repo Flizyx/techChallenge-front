@@ -22,6 +22,12 @@ const Sidebar = ({ open, navItems = defaultNavItems, setOpen }: Props) => {
   useOnClickOutside(ref, (e) => {
     setOpen(false);
   });
+  const handleLogout = (item) => {
+    const token = sessionStorage.getItem('token');
+    if ((token && token != 'undefined') && item.href =="/login") {
+      sessionStorage.clear();
+    }
+  };
   return (
     <div
       className={classNames({
@@ -47,7 +53,7 @@ const Sidebar = ({ open, navItems = defaultNavItems, setOpen }: Props) => {
                     "flex gap-4 items-center ": true, //layout
                     "transition-colors duration-300": true, //animation
                     "rounded-md p-2 mx-2": true, //self style
-                  })}
+                  })} onClick={() => handleLogout(item)}
                 >
                   {item.icon} {item.label}
                 </li>
@@ -61,7 +67,7 @@ const Sidebar = ({ open, navItems = defaultNavItems, setOpen }: Props) => {
         <div className="flex gap-4 items-center">
           <Image
             src={
-              ""
+              "/images/default-profile.png"
             }
             height={36}
             width={36}
@@ -69,10 +75,9 @@ const Sidebar = ({ open, navItems = defaultNavItems, setOpen }: Props) => {
             className="rounded-full"
           />
           <div className="flex flex-col ">
+            <Link target="_blank" href="https://www.linkedin.com/in/nicolaslizarazo/" className="text-gray-200 text-sm">
             <span className="text-gray-50 my-0">Made by: Nicolas lizarazo</span>
-            {/* <Link href="/" className="text-gray-200 text-sm">
-              View Profile
-            </Link> */}
+            </Link>
           </div>
         </div>
       </div>

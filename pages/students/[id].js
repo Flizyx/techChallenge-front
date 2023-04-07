@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 async function getStudent(id) {
   const response = await fetch(`https://schooldemoback.onrender.com/students/${id}`);
   const data = await response.json();
@@ -22,7 +22,7 @@ function Student() {
   const [student, setStudent] = useState({});
   const [siblings, setSiblings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const randomColor = Math.floor(Math.random() * 5) + 1;
   useEffect(() => {
     if(!router.query.id){
       return;
@@ -32,7 +32,6 @@ function Student() {
       const studentData = await getStudent(router.query.id);
       if (typeof window !== 'undefined') {
         const token = sessionStorage.getItem('token');
-        console.log(token);
         if(token != null && token != undefined && token != 'undefined'){
           const siblingsData = await getSiblings(router.query.id, token);
           setSiblings(siblingsData);
@@ -43,10 +42,19 @@ function Student() {
     }
     fetchData();
   }, [router]);
-
+function getRandomColor(index) {
+    const colors = ["bg-blue-500", "bg-green-500", "bg-red-500", "bg-yellow-500", "bg-orange-500"];
+    return colors[index % colors.length];
+  }
   return (
     <div className='container mx-auto px-4 auto relative'>
-      
+       <Link href={`/`} legacyBehavior>
+        <a className="w-1/6 mt-4  hover:bg-gray-300 text-black font-bold py-2 px-4 mb-4 rounded flex items-center">
+          <ArrowLeftIcon className="w-5 h-5 mr-2" />
+          Return
+        </a>
+      </Link> 
+      <div className={`w-full mb-4 ${getRandomColor(randomColor)} h-2`}></div>
        <h1 className="text-3xl font-bold underline mb-4">Student details</h1>
       <p className="text-lg mb-4">
         Here is the main features of student
@@ -65,24 +73,33 @@ function Student() {
           ) : (
             <>
               {student.classroom.length === 0 ? (
-                <div>
-                  <ul>
-                    <li>Nombre: {student.name}</li>
-                    <li>Género: {student.gender}</li>
-                    <li>Edad: {student.age}</li>
-                  </ul>
-                  <li>No hay información disponible sobre la clase del estudiante.</li>
+                <div >
+                  <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-1/2">
+                    <div className={`${getRandomColor(randomColor)} w-1/12`} />
+
+                    <img
+                      className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
+                      src={student.profile_image_path || "/images/default-profile.png"}
+                      alt=""
+                    />
+                    <div className="flex flex-row mt-4">
+                      <div className="p-4 flex flex-col w-full">
+                        <h2 className="text-xl font-bold mb-2">{student.name}</h2>
+                        <h2 className="text-lg font-bold mb-2">Genre: {student.gender}</h2>
+                        <h2 className="text-lg font-bold mb-2">Age: {student.age}</h2>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div >
                    <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-1/2">
+                   <div className={`${getRandomColor(randomColor)} w-1/12`} />
+
                     <img
                       className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
-                      src={student.profile_image_path}
+                      src={student.profile_image_path || "/images/default-profile.png"}
                       alt=""
-                    />
-                    <img src={student.profile_image_path} alt="" 
-                      onError={(e) => { e.target.onerror = null; e.target.src = '../../public/images/default-profile.png' }} 
                     />
                     <div className="flex flex-row mt-4">
                       <div className="p-4 flex flex-col w-full">
@@ -93,11 +110,11 @@ function Student() {
                       <Link href={`/classroom/${student.classroom.id}`} key={student.classroom.id} legacyBehavior>
                         <a className="w-full">
                           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                            {/* <img
-                              className="w-full h-48 object-cover"
-                              src="https://images.unsplash.com/photo-1611178568980-6f9a8d5b7f3c"
+                            <img
+                              className="w-full h-30 object-cover"
+                              src="/images/default-classroom.jpg"
                               alt=""
-                            /> */}
+                            />
                             <div className="p-4">
                               <h2 className="text-xl font-semibold">{student.classroom.name}</h2>
                               <p className="text-gray-500">{student.classroom.capacity} students</p>
@@ -109,16 +126,21 @@ function Student() {
                   </div>
                 </div>
               )}
+              <h2 className="text-2xl font-bold mb-4 mt-4 pb-2 border-b-2 border-t-2">Siblings</h2>
               {Array.isArray(siblings) && siblings.length > 0 ? (
                 <>
-                  Siblings:
                   <div className="flex flex-row flex-wrap">
-                      {siblings.map((sibling) => (
-                        <div key={sibling.id} class="w-full p-2 md:w-2/3 lg:w-1/2 xl:w-1/2">
+                      {siblings.map((sibling,index) => (
+                        <div key={sibling.id} className="w-full p-2 md:w-2/3 lg:w-1/2 xl:w-1/2">
                           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row">
+                          <div className={`${getRandomColor(index)} w-1/12`} />
                             <img
                               className="w-2/5 h-auto object-cover aspect-w-1 aspect-h-1"
-                              src={sibling.student.id !== student.id ? sibling.student.profile_image_path : sibling.sibling.profile_image_path}
+                              src={
+                                sibling.student.id !== student.id
+                                  ? sibling.student.profile_image_path || "/images/default-profile.png"
+                                  : sibling.sibling.profile_image_path || "/images/default-profile.png"
+                              }
                               alt=""
                             />
                             <div className="p-4 w-1/2">
@@ -157,7 +179,7 @@ function Student() {
                 </>
               ) : (
                 <>
-                  <div>{siblings.message}</div>
+                <div>You need to log in to see and edit sibling info</div>
                 </>
               )}
             </>
