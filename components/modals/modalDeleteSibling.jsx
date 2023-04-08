@@ -1,4 +1,5 @@
 import React, { useState,useRef, useEffect } from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 function ModalDeleteSibling(props) {
   const [showModal, setShowModal] = useState(false);
@@ -8,9 +9,8 @@ function ModalDeleteSibling(props) {
   async function handleSubmit(event) {
     setIsLoading(true);
     event.preventDefault();
-    const token = sessionStorage.getItem('token');
-    if(token != null && token != undefined && token != 'undefined'){
-      const response = await postData(`https://schooldemoback.onrender.com/classrooms/${props.classroom.id}`,token);
+    if(props.token != null && props.token != undefined && props.token != 'undefined'){
+      const response = await postData(`https://schooldemoback.onrender.com/siblings/${props.sibling.id}`,props.token);
       window.location.reload();
     }
     setShowModal(false);
@@ -41,10 +41,10 @@ function ModalDeleteSibling(props) {
   }, [modalRef]);
   return (
     <>
-      <button className="w-1/2 bg-black hover:bg-red-700 text-white hover:text-white font-bold py-2 px-4 rounded-r"
-          onClick={() => setShowModal(true)}>
-        Delete 
-      </button>
+      <a className="bg-white rounded-full p-2 hover:bg-gray-200 cursor-pointer"
+                onClick={() => setShowModal(true)}>
+        <TrashIcon className="h-5 w-5 text-gray-400" />
+      </a>
       {showModal ? (
         <>
         {isLoading ? (
@@ -73,14 +73,13 @@ function ModalDeleteSibling(props) {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <form onSubmit={handleSubmit}>
                     <button
+                    onClick={handleSubmit}
                       type="submit"
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
                     >
-                      Delete Class
+                      Delete sibling relationship
                     </button>
-                  </form>
                 </div>
               </div>
             </div>

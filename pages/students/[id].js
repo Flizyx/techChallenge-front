@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import ModalModifStudent from '../../components/modals/modalModifStudent';
+
 async function getStudent(id) {
   const response = await fetch(`https://schooldemoback.onrender.com/students/${id}`);
   const data = await response.json();
@@ -16,7 +18,16 @@ async function getSiblings(id,token) {
   const data = await response.json();
   return data;
 }
-
+async function getStudents() {
+  const response = await fetch('https://schooldemoback.onrender.com/students');
+  const data = await response.json();
+  return data;
+}
+async function getClassrooms() {
+  const response = await fetch('https://schooldemoback.onrender.com/classrooms');
+  const data = await response.json();
+  return data;
+}
 function Student() {
   const router = useRouter();
   const [student, setStudent] = useState({});
@@ -24,6 +35,8 @@ function Student() {
   const [isLoading, setIsLoading] = useState(true);
   const [SessionLink, setSession] = useState('');
   const [session, setSessionState] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [classrooms, setClassrooms] = useState([]);
 
   const randomColor = Math.floor(Math.random() * 5) + 1;
   useEffect(() => {
@@ -50,6 +63,10 @@ function Student() {
         }
       }
       setStudent(studentData);
+      const data2 = await getStudents();
+      setStudents(data2);
+      const data3 = await getClassrooms();
+      setClassrooms(data3);
       setIsLoading(false);
     }
     fetchData();
@@ -104,7 +121,14 @@ function getRandomColor(index) {
                   </div>
                 </div>
               ) : (
-                <div >
+                <div>
+                  {session?(
+                    <div  className='mb-4'>
+                      <ModalModifStudent classrooms={classrooms} student={student} students={students} token={sessionStorage.getItem('token')}/>
+                    </div>
+                  ) :(
+                  <p></p>
+                  )}
                    <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-3/4">
                    <div className={`${getRandomColor(randomColor)} w-1/12`} />
 
@@ -144,6 +168,15 @@ function getRandomColor(index) {
                   <div className="flex flex-row flex-wrap">
                       {siblings.map((sibling,index) => (
                         <div key={sibling.id} className="w-full p-2 md:w-2/3 lg:w-1/2 xl:w-1/2">
+                          {session?(
+                    <div  className='mb-4'>
+                      <ModalModifStudent classrooms={classrooms} 
+                      student={sibling.student.id !== student.id ? sibling.student : sibling.sibling}
+                        students={students} token={sessionStorage.getItem('token')}/>
+                    </div>
+                  ) :(
+                    <p></p>
+                  )}
                           <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row">
                           <div className={`${getRandomColor(index)} w-1/12`} />
                             <img
@@ -171,8 +204,13 @@ function getRandomColor(index) {
                                   <a className="w-full mr-2">
                                     <div className="bg-white rounded-lg shadow-lg overflow-hidden text-sm">
                                       <div className="p-2">
-                                        <h2 className="text-md font-semibold">{student.classroom.name}</h2>
-                                        <p className="text-gray-500">{student.classroom.capacity} students</p>
+                                        <h2 className="text-md font-semibold">
+                                        {sibling.student.id !== student.id ? sibling.student.classroom.name : sibling.sibling.classroom.name}                                          
+                                        {/* {student.classroom.name} */}
+                                          </h2>
+                                        <p className="text-gray-500">
+                                          {sibling.student.id !== student.id ? sibling.student.classroom.capacity : sibling.sibling.classroom.capacity} students
+                                         </p>
                                       </div>
                                     </div>
                                   </a>

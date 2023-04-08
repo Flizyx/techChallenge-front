@@ -1,6 +1,6 @@
 import React, { useState,useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import ModalDeleteSibling from './modalDeleteSibling';
 
 function ModalModifStudent(props) {
   const [showModal, setShowModal] = useState(false);
@@ -16,6 +16,7 @@ function ModalModifStudent(props) {
   const [filteredStudents, setFilteredStudents] = useState([]);
 
   async function handleSubmit(event) {
+    console.log("handle modifystudent")
     setIsLoading(true);
     event.preventDefault();
     const data1 = {
@@ -172,7 +173,7 @@ function ModalModifStudent(props) {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto overflow-y-auto max-h-80">
-                <form onSubmit={handleSubmit}>
+                <form >
                     <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
                       Name
                     </label>
@@ -247,9 +248,10 @@ function ModalModifStudent(props) {
                                   </ul>
                                 </div>
                                 <div className="flex items-center justify-center">
-                                  <button className="bg-white rounded-full p-2 hover:bg-gray-200">
+                                  {/* <button className="bg-white rounded-full p-2 hover:bg-gray-200">
                                     <TrashIcon className="h-5 w-5 text-gray-400" />
-                                  </button>
+                                  </button> */}
+                                  <ModalDeleteSibling sibling={sibling} token={sessionStorage.getItem('token')}/>
                                 </div>
                               </div>
                             </div>
@@ -292,6 +294,7 @@ function ModalModifStudent(props) {
                     )}
                     </div>
                         <button
+                        onClick={handleSubmit}
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
                         >

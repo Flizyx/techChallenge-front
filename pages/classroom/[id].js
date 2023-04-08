@@ -86,7 +86,11 @@ function SelectedClassroom() {
             </div>
             ):(
               <div>
-                <ModalModifRoom classroom={classroomData}/>
+                {session?(
+                   <ModalModifRoom classroom={classroomData}/>
+                 ) :(
+                  <p></p>
+                 )}
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden w-1/2 flex flex-row mt-4">
                   <img
                     className="w-1/3 h-auto object-cover"
@@ -101,8 +105,11 @@ function SelectedClassroom() {
                     {/* Add your student cards here */}
                   </div>
                 </div>
-                
-                <ModalDeleteRoom classroom={classroomData}/>
+                {session?(
+                  <ModalDeleteRoom classroom={classroomData}/>
+                  ) :(
+                  <p></p>
+                  )}
                 <h2 class="text-2xl font-bold mb-4 mt-4 pb-2 border-b-2 border-t-2">Students</h2>
 
                 <input
@@ -112,7 +119,7 @@ function SelectedClassroom() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="border border-gray-400 rounded-md py-2 px-3 mb-4"
                 />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4">
                   {filteredStudents?.map((student,index) => (
                     <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row">
                     <div className={`h-full w-2 ${getRandomColor(index)}`}></div>

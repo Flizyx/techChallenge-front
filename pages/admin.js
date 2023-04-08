@@ -32,9 +32,9 @@ function Admin() {
     const colors = ["bg-blue-500", "bg-green-500", "bg-lime-500", "bg-yellow-500", "bg-orange-500"];
     return colors[index % colors.length];
   }
-  const filteredClassrooms = classrooms.filter((classroom) =>
+  const filteredClassrooms = Array.isArray(classrooms) ? classrooms.filter((classroom) =>
     classroom.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) : [];
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
