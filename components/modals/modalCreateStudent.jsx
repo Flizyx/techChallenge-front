@@ -18,8 +18,8 @@ function ModalCreateStudent(props) {
     const data2 = {siblings: [parseInt(siblings)]};
     const token = sessionStorage.getItem('token');
     if(token != null && token != undefined && token != 'undefined'){
-      const response = await postData('https://schooldemoback.onrender.com/students', data1,token);
-      const response2 = await postData(`https://schooldemoback.onrender.com/students/${response.id}/siblings`, data2,token);
+      const response = await postData(`${process.env.NEXT_PUBLIC_API_URL}/students`, data1,token);
+      const response2 = await postData(`${process.env.NEXT_PUBLIC_API_URL}/students/${response.id}/siblings`, data2,token);
       window.location.reload();
     }
     setShowModal(false);

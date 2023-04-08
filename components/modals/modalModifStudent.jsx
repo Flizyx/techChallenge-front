@@ -27,9 +27,9 @@ function ModalModifStudent(props) {
     };
     const data2 = {siblings: [parseInt(siblings)]};
     if(props.token != null && props.token != undefined && props.token != 'undefined'){
-      const response = await putData(`https://schooldemoback.onrender.com/students/${props.student.id}`, data1,props.token);
+      const response = await putData(`${process.env.NEXT_PUBLIC_API_URL}/students/${props.student.id}`, data1,props.token);
       if(hasSiblings&& siblings){
-        const response2 = await postData(`https://schooldemoback.onrender.com/students/${response.id}/siblings`, data2,props.token);
+        const response2 = await postData(`${process.env.NEXT_PUBLIC_API_URL}/students/${response.id}/siblings`, data2,props.token);
       }
       window.location.reload();
     }
@@ -75,7 +75,7 @@ function ModalModifStudent(props) {
     return response.json();
   }
   async function fetchData() {
-    const data = await getSiblingsInfo(`https://schooldemoback.onrender.com/students/${props.student.id}/siblings`,props.token);
+    const data = await getSiblingsInfo(`${process.env.NEXT_PUBLIC_API_URL}/students/${props.student.id}/siblings`,props.token);
     setSiblingsinfo(data);
   }
  function setShowModalfirst(param){

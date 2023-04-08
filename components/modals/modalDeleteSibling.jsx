@@ -10,7 +10,7 @@ function ModalDeleteSibling(props) {
     setIsLoading(true);
     event.preventDefault();
     if(props.token != null && props.token != undefined && props.token != 'undefined'){
-      const response = await postData(`https://schooldemoback.onrender.com/siblings/${props.sibling.id}`,props.token);
+      const response = await postData(`${process.env.NEXT_PUBLIC_API_URL}/siblings/${props.sibling.id}`,props.token);
       window.location.reload();
     }
     setShowModal(false);
@@ -41,7 +41,7 @@ function ModalDeleteSibling(props) {
   }, [modalRef]);
   return (
     <>
-      <a className="bg-white rounded-full p-2 hover:bg-gray-200 cursor-pointer"
+      <a className="bg-white rounded-full p-2 cursor-pointer"
                 onClick={() => setShowModal(true)}>
         <TrashIcon className="h-5 w-5 text-gray-400" />
       </a>

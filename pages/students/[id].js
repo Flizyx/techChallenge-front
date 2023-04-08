@@ -3,14 +3,16 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ModalModifStudent from '../../components/modals/modalModifStudent';
+import ModalDeleteSibling from '../../components/modals/modalDeleteSibling';
+import ModalDeleteStudent from '../../components/modals/modalDeleteStudent';
 
 async function getStudent(id) {
-  const response = await fetch(`https://schooldemoback.onrender.com/students/${id}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/students/${id}`);
   const data = await response.json();
   return data;
 }
 async function getSiblings(id,token) {
-  const response = await fetch(`https://schooldemoback.onrender.com/students/${id}/siblings`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/students/${id}/siblings`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -19,12 +21,12 @@ async function getSiblings(id,token) {
   return data;
 }
 async function getStudents() {
-  const response = await fetch('https://schooldemoback.onrender.com/students');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/students`);
   const data = await response.json();
   return data;
 }
 async function getClassrooms() {
-  const response = await fetch('https://schooldemoback.onrender.com/classrooms');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`);
   const data = await response.json();
   return data;
 }
@@ -162,6 +164,13 @@ function getRandomColor(index) {
                   </div>
                 </div>
               )}
+              {session?(
+                <div  className='mt-4'>
+                  <ModalDeleteStudent student={student} token={sessionStorage.getItem('token')}/>
+                </div>
+              ) :(
+              <p></p>
+              )}
               <h2 className="text-2xl font-bold mb-4 mt-4 pb-2 border-b-2 border-t-2">Siblings</h2>
               {Array.isArray(siblings) && siblings.length > 0 ? (
                 <>
@@ -169,16 +178,22 @@ function getRandomColor(index) {
                       {siblings.map((sibling,index) => (
                         <div key={sibling.id} className="w-full p-2 md:w-2/3 lg:w-1/2 xl:w-1/2">
                           {session?(
-                    <div  className='mb-4'>
-                      <ModalModifStudent classrooms={classrooms} 
-                      student={sibling.student.id !== student.id ? sibling.student : sibling.sibling}
-                        students={students} token={sessionStorage.getItem('token')}/>
-                    </div>
-                  ) :(
-                    <p></p>
-                  )}
-                          <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row">
-                          <div className={`${getRandomColor(index)} w-1/12`} />
+                            <div  className='mb-4'>
+                              <ModalModifStudent classrooms={classrooms} 
+                              student={sibling.student.id !== student.id ? sibling.student : sibling.sibling}
+                              students={students} token={sessionStorage.getItem('token')}/>
+                              <ModalDeleteStudent student={sibling.student.id !== student.id ? sibling.student : sibling.sibling} token={sessionStorage.getItem('token')}/>
+                            </div>
+                          ) :(
+                            <p></p>
+                          )}
+                          <div className="relative bg-white rounded-lg shadow-lg overflow-hidden flex flex-row">
+                            {session ? 
+                            <div className="absolute top-0 right-5">
+                            <ModalDeleteSibling sibling={sibling} token={sessionStorage.getItem('token')}/>
+                          </div>
+                            : <div />}
+                            <div className={`${getRandomColor(index)} w-1/12`} />
                             <img
                               className="w-2/5 h-auto object-cover aspect-w-1 aspect-h-1"
                               src={
@@ -199,18 +214,25 @@ function getRandomColor(index) {
                                 <li>Age: {sibling.student.id !== student.id ? sibling.student.age : sibling.sibling.age}</li>
                               </ul>
                               <div className="flex flex-row w-full mt-4">
-                                <Link href={`/classroom/${sibling.student.id !== student.id ? sibling.student.classroom_id : sibling.sibling.classroom_id}`} 
-                                  key={sibling.student.id !== student.id ? sibling.student.classroom_id : sibling.sibling.classroom_id} legacyBehavior>
+                                <Link
+                                  href={`/classroom/${
+                                    sibling.student.id !== student.id ? sibling.student.classroom_id : sibling.sibling.classroom_id
+                                  }`}
+                                  key={
+                                    sibling.student.id !== student.id ? sibling.student.classroom_id : sibling.sibling.classroom_id
+                                  }
+                                  legacyBehavior
+                                >
                                   <a className="w-full mr-2">
                                     <div className="bg-white rounded-lg shadow-lg overflow-hidden text-sm">
                                       <div className="p-2">
                                         <h2 className="text-md font-semibold">
-                                        {sibling.student.id !== student.id ? sibling.student.classroom.name : sibling.sibling.classroom.name}                                          
-                                        {/* {student.classroom.name} */}
-                                          </h2>
+                                          {sibling.student.id !== student.id ? sibling.student.classroom.name : sibling.sibling.classroom.name}
+                                          {/* {student.classroom.name} */}
+                                        </h2>
                                         <p className="text-gray-500">
                                           {sibling.student.id !== student.id ? sibling.student.classroom.capacity : sibling.sibling.classroom.capacity} students
-                                         </p>
+                                        </p>
                                       </div>
                                     </div>
                                   </a>

@@ -3,7 +3,7 @@ import React, { useState, useEffect,useRef  } from 'react';
 import Link from 'next/link';
 
 async function getClassrooms() {
-  const response = await fetch('https://schooldemoback.onrender.com/classrooms');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`);
   const data = await response.json();
   return data;
 }

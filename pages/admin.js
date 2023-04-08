@@ -6,14 +6,15 @@ import ModalCreateStudent from '../components/modals/modalCreateStudent';
 import ModalModifRoom from '../components/modals/modalModifRoom';
 import ModalDeleteRoom from '../components/modals/modalDeleteRoom';
 import ModalModifStudent from '../components/modals/modalModifStudent';
+import ModalDeleteStudent from '../components/modals/modalDeleteStudent';
 
 async function getClassrooms() {
-  const response = await fetch('https://schooldemoback.onrender.com/classrooms');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`);
   const data = await response.json();
   return data;
 }
 async function getStudents() {
-  const response = await fetch('https://schooldemoback.onrender.com/students');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/students`);
   const data = await response.json();
   return data;
 }
@@ -181,9 +182,10 @@ function Admin() {
                 Edit
                 </button> */}
               <ModalModifStudent classrooms={classrooms} student={student} students={students} token={sessionStorage.getItem('token')}/>
-              <button className="w-1/2 bg-gray-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ">
+              {/* <button className="w-1/2 bg-gray-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ">
                 Del
-              </button>
+              </button> */}
+              <ModalDeleteStudent student={student} token={sessionStorage.getItem('token')}/>
             </div>
           </div>
         ))}

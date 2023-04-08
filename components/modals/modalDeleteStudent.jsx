@@ -1,6 +1,7 @@
 import React, { useState,useRef, useEffect } from 'react';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
-function ModalDeleteRoom(props) {
+function ModalDeleteStudent(props) {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const modalRef = useRef();
@@ -8,9 +9,8 @@ function ModalDeleteRoom(props) {
   async function handleSubmit(event) {
     setIsLoading(true);
     event.preventDefault();
-    const token = sessionStorage.getItem('token');
-    if(token != null && token != undefined && token != 'undefined'){
-      const response = await postData(`${process.env.NEXT_PUBLIC_API_URL}/classrooms/${props.classroom.id}`,token);
+    if(props.token != null && props.token != undefined && props.token != 'undefined'){
+      const response = await postData(`${process.env.NEXT_PUBLIC_API_URL}/students/${props.student.id}`,props.token);
       window.location.reload();
     }
     setShowModal(false);
@@ -41,9 +41,9 @@ function ModalDeleteRoom(props) {
   }, [modalRef]);
   return (
     <>
-      <button className="w-1/2 bg-black hover:bg-red-700 text-white hover:text-white font-bold py-2 px-4 rounded-r"
-          onClick={() => setShowModal(true)}>
-        Delete 
+      <button className="w-1/2 bg-gray-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
+        onClick={() => setShowModal(true)}>
+        Del
       </button>
       {showModal ? (
         <>
@@ -73,28 +73,13 @@ function ModalDeleteRoom(props) {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  you will delete: 
-                  <p className='font-bold'>  {props.classroom.name}</p>
-                  {props.classroom.students ? (
-                    <div>
-                      <p>If there are students, they will be relocated to another class:</p>
-                      <ul>
-                        {props.classroom.students.map((student) => (
-                          <li className='font-bold' key={student.id}>{student.name}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : (
-                    <p>If there are no students, the class will be deleted.</p>
-                  )}
-                  <form onSubmit={handleSubmit}>
                     <button
+                    onClick={handleSubmit}
                       type="submit"
                       className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
                     >
-                      Delete Class
+                      Delete Student info
                     </button>
-                  </form>
                 </div>
               </div>
             </div>
@@ -106,4 +91,4 @@ function ModalDeleteRoom(props) {
   );
 }
 
-export default ModalDeleteRoom;
+export default ModalDeleteStudent;

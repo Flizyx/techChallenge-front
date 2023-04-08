@@ -5,7 +5,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ModalModifRoom from '../../components/modals/modalModifRoom';
 import ModalDeleteRoom from '../../components/modals/modalDeleteRoom';
 async function getClassroomInfo(id) {
-  const response = await fetch(`https://schooldemoback.onrender.com/classrooms/${parseInt(id)}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms/${parseInt(id)}`);
   const data = await response.json();
   return data;
 }

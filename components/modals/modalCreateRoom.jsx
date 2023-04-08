@@ -13,7 +13,7 @@ function ModalCreateRoom() {
     const data = { name, capacity: parseInt(capacity) };
     const token = sessionStorage.getItem('token');
     if(token != null && token != undefined && token != 'undefined'){
-      const response = await postData('https://schooldemoback.onrender.com/classrooms', data,token);
+      const response = await postData(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`, data,token);
       window.location.reload();
     }
     setShowModal(false);

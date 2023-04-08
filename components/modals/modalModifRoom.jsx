@@ -16,7 +16,7 @@ function ModalModifRoom(props) {
     };
     const token = sessionStorage.getItem('token');
     if(token != null && token != undefined && token != 'undefined'){
-      const response = await postData(`https://schooldemoback.onrender.com/classrooms/${props.classroom.id}`, data,token);
+      const response = await postData(`${process.env.NEXT_PUBLIC_API_URL}/classrooms/${props.classroom.id}`, data,token);
       window.location.reload();
     }
     setShowModal(false);

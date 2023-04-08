@@ -49,7 +49,7 @@ function Login() {
       return;
     }
     try {
-      const data = await postData('https://schooldemoback.onrender.com/login', { email, password });
+      const data = await postData(`${process.env.NEXT_PUBLIC_API_URL}/login`, { email, password });
       if (data.error) {
         return;
       }
