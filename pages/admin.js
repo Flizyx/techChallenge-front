@@ -7,6 +7,7 @@ import ModalModifRoom from '../components/modals/modalModifRoom';
 import ModalDeleteRoom from '../components/modals/modalDeleteRoom';
 import ModalModifStudent from '../components/modals/modalModifStudent';
 import ModalDeleteStudent from '../components/modals/modalDeleteStudent';
+import Image from 'next/image'
 
 async function getClassrooms() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms`);
@@ -132,14 +133,16 @@ function Admin() {
           </div>
         ) : (
           filteredClassrooms.map((classroom,index) => (
-          <div>
-            <Link href={`/classroom/${classroom.id}`} key={classroom.id} legacyBehavior>
+          <div  key={classroom.id}>
+            <Link href={`/classroom/${classroom.id}`} legacyBehavior>
               <a className="relative">
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                  <img
+                  <Image 
                     className="w-full h-48 object-cover opacity-20"
                     src="/images/default-classroom.jpg"
                     alt=""
+                    width={960}
+                    height={540}
                   />
                   <div className={`absolute top-0 left-0 w-full h-2 ${getRandomColor(index)}`}></div>
                   <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-black">
@@ -169,7 +172,14 @@ function Admin() {
           <div key={student.id} className="relative w-1/4 p-2">
             <Link href={`/students/${student.id}`} legacyBehavior>
               <a className="block bg-white rounded-lg shadow-lg overflow-hidden">
-                <img className="w-full h-48 object-cover opacity-20" src="/images/default-profile.png" alt="" />
+                {/* <Image  className="w-full h-48 object-cover opacity-20" src="/images/default-profile.png" alt="" /> */}
+                <Image
+                 className="w-full h-48 object-cover opacity-20"
+                 src="/images/default-profile.png"
+                  height={360}
+                  width={360}
+                  alt=""
+                />
                 <div className={`absolute top-0 left-0 w-full h-2 ${getRandomColor(index)}`}></div>
                 <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center text-black">
                   <h2 className="text-xl font-semibold">{student.name}</h2>

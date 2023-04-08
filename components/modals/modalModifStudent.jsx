@@ -131,7 +131,7 @@ function ModalModifStudent(props) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [modalRef,hasSiblings, props.students, props.siblingsinfo, props.student]);
+  }, [modalRef,hasSiblings, props.students, siblingsinfo, props.student]);
   return (
     <>
       {/* <button

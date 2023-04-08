@@ -5,6 +5,7 @@ import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ModalModifStudent from '../../components/modals/modalModifStudent';
 import ModalDeleteSibling from '../../components/modals/modalDeleteSibling';
 import ModalDeleteStudent from '../../components/modals/modalDeleteStudent';
+import Image from 'next/image'
 
 async function getStudent(id) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/students/${id}`);
@@ -108,9 +109,16 @@ function getRandomColor(index) {
                   <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-1/2">
                     <div className={`${getRandomColor(randomColor)} w-1/12`} />
 
-                    <img
+                    {/* <Image 
                       className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
                       src={student.profile_image_path || "/images/default-profile.png"}
+                      alt=""
+                    /> */}
+                    <Image
+                      className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
+                      src={student.profile_image_path || "/images/default-profile.png"}
+                      height={360}
+                      width={360}
                       alt=""
                     />
                     <div className="flex flex-row mt-4">
@@ -134,9 +142,11 @@ function getRandomColor(index) {
                    <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-3/4">
                    <div className={`${getRandomColor(randomColor)} w-1/12`} />
 
-                    <img
+                   <Image
                       className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
                       src={student.profile_image_path || "/images/default-profile.png"}
+                      height={360}
+                      width={360}
                       alt=""
                     />
                     <div className="flex flex-row mt-4">
@@ -148,10 +158,17 @@ function getRandomColor(index) {
                       <Link href={`/classroom/${student.classroom.id}`} key={student.classroom.id} legacyBehavior>
                         <a className="w-full">
                           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                            <img
+                            {/* <Image 
                               className="w-full h-30 object-cover"
                               src="/images/default-classroom.jpg"
                               alt=""
+                            /> */}
+                             <Image 
+                              className="w-full h-30 object-cover"
+                              src="/images/default-classroom.jpg"
+                              alt=""
+                              width={960}
+                              height={540}
                             />
                             <div className="p-4">
                               <h2 className="text-xl font-semibold">{student.classroom.name}</h2>
@@ -194,7 +211,7 @@ function getRandomColor(index) {
                           </div>
                             : <div />}
                             <div className={`${getRandomColor(index)} w-1/12`} />
-                            <img
+                            <Image 
                               className="w-2/5 h-auto object-cover aspect-w-1 aspect-h-1"
                               src={
                                 sibling.student.id !== student.id
@@ -202,6 +219,8 @@ function getRandomColor(index) {
                                   : sibling.sibling.profile_image_path || "/images/default-profile.png"
                               }
                               alt=""
+                              height={360}
+                              width={360}
                             />
                             <div className="p-4 w-1/2">
                               <h2 className="text-lg font-bold mb-2">

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import ModalModifRoom from '../../components/modals/modalModifRoom';
 import ModalDeleteRoom from '../../components/modals/modalDeleteRoom';
+import Image from 'next/image'
+
 async function getClassroomInfo(id) {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classrooms/${parseInt(id)}`);
   const data = await response.json();
@@ -69,10 +71,17 @@ function SelectedClassroom() {
           {classroomData.error ? (
             <div>
               <div className="bg-white rounded-lg shadow-lg overflow-hidden w-1/2 flex flex-row mt-4">
-                  <img
+                  {/* <Image 
                     className="w-1/3 h-auto object-cover"
                     src={classroomData.image_path || "/images/default-classroom.jpg"}
                     alt=""
+                  /> */}
+                  <Image 
+                    className="w-1/3 h-auto object-cover"
+                    src={classroomData.image_path || "/images/default-classroom.jpg"}
+                    alt=""
+                    width={960}
+                    height={540}
                   />
                   <div className="p-4 pt-6 pb-8 w-2/3">
                     <h1 className="text-3xl font-bold  mb-4">This classroom does not exist</h1>
@@ -92,10 +101,17 @@ function SelectedClassroom() {
                   <p></p>
                  )}
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden w-1/2 flex flex-row mt-4">
-                  <img
+                  {/* <Image 
                     className="w-1/3 h-auto object-cover"
                     src={classroomData.image_path || "/images/default-classroom.jpg"}
                     alt=""
+                  /> */}
+                   <Image 
+                    className="w-1/3 h-auto object-cover"
+                    src={classroomData.image_path || "/images/default-classroom.jpg"}
+                    alt=""
+                    width={960}
+                    height={540}
                   />
                   <div className="p-4 pt-6 pb-8 w-2/3">
                     <h1 className="text-3xl font-bold underline mb-4">{classroomData.name}</h1>
@@ -123,9 +139,16 @@ function SelectedClassroom() {
                   {filteredStudents?.map((student,index) => (
                     <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row">
                     <div className={`h-full w-2 ${getRandomColor(index)}`}></div>
-                    <img
+                    {/* <Image 
                       className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
                       src="/images/default-profile.png"
+                      alt=""
+                    /> */}
+                    <Image
+                      className="w-48 h-48 object-cover aspect-w-1 aspect-h-1"
+                      src="/images/default-profile.png"
+                      height={360}
+                      width={360}
                       alt=""
                     />
                     <div className="p-4">
