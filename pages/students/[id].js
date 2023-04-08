@@ -22,8 +22,20 @@ function Student() {
   const [student, setStudent] = useState({});
   const [siblings, setSiblings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [SessionLink, setSession] = useState('');
+  const [session, setSessionState] = useState(false);
+
   const randomColor = Math.floor(Math.random() * 5) + 1;
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = sessionStorage.getItem('token');
+      if (!token || token =='undefined') {
+        setSession('/');
+      } else {
+        setSession('/admin');
+        setSessionState(true);
+      }
+    }
     if(!router.query.id){
       return;
     }
@@ -48,7 +60,7 @@ function getRandomColor(index) {
   }
   return (
     <div className='container mx-auto px-4 auto relative'>
-       <Link href={`/`} legacyBehavior>
+       <Link href={SessionLink} legacyBehavior>
         <a className="w-1/6 mt-4  hover:bg-gray-300 text-black font-bold py-2 px-4 mb-4 rounded flex items-center">
           <ArrowLeftIcon className="w-5 h-5 mr-2" />
           Return
@@ -57,7 +69,7 @@ function getRandomColor(index) {
       <div className={`w-full mb-4 ${getRandomColor(randomColor)} h-2`}></div>
        <h1 className="text-3xl font-bold underline mb-4">Student details</h1>
       <p className="text-lg mb-4">
-        Here is the main features of student
+        Here are the main features of student
       </p>
       {isLoading ? (
         <div>
@@ -93,7 +105,7 @@ function getRandomColor(index) {
                 </div>
               ) : (
                 <div >
-                   <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-1/2">
+                   <div key={student.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-row w-3/4">
                    <div className={`${getRandomColor(randomColor)} w-1/12`} />
 
                     <img
@@ -179,7 +191,7 @@ function getRandomColor(index) {
                 </>
               ) : (
                 <>
-                <div>You need to log in to see and edit sibling info</div>
+                <div>No info available</div>
                 </>
               )}
             </>
